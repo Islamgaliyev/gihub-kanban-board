@@ -26,7 +26,7 @@
         }
 
         .list-group-item-warning #state:after {
-            font-family: 'Glyphicons Halflings';
+            font-family: 'Glyphicons Halflings', serif;
             content: "\e073";
         }
     </style>
@@ -69,7 +69,7 @@
                                    class="list-group-item {{#paused}}list-group-item-warning{{/paused}} {{^paused}}list-group-item-info{{/paused}}">
                                     <img class="img-rounded" src="{{assignee}}" width="16" height="16" border="0"/>&nbsp;
                                     {{#paused}}<em><small>{{/paused}}{{title}}{{#paused}}</small></em>{{/paused}}
-                                    <span id="state" class="glyphicon"></span>
+                                    <span id="state" class="glyphicon-new-window"></span>
                                     <span style="float: right" class="glyphicon glyphicon-new-window"/>
                                 </a>
                             {{/active}}

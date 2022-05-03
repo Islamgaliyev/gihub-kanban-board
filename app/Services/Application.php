@@ -1,6 +1,6 @@
 <?php
 
-namespace App\KanbanBoard;
+namespace App\Services;
 
 use App\Utilities;
 use Michelf\Markdown;
@@ -32,7 +32,6 @@ class Application
 
             $percent = self::_percent($data['closed_issues'], $data['open_issues']);
             if ($percent) {
-
                 $milestones[] = array(
                     'milestone' => $name,
                     'url' => $data['html_url'],
@@ -43,6 +42,8 @@ class Application
                 );
             }
         }
+
+
 
         return $milestones;
     }
@@ -57,17 +58,19 @@ class Application
                 continue;
             }
 
+            $body = $issue['body'] ?? '';
+
             $result[$this->getStatus($issue)][] = array(
                 'id' => $issue['id'], 'number' => $issue['number'],
                 'title' => $issue['title'],
-                'body' => Markdown::defaultTransform($issue['body']),
+                'body' => Markdown::defaultTransform($body),
                 'url' => $issue['html_url'],
                 'assignee' => (is_array($issue) && array_key_exists('assignee',
                         $issue) && !empty($issue['assignee'])) ? $issue['assignee']['avatar_url'] . '?s=16' : null,
                 'paused' => self::labels_match($issue, $this->paused_labels),
                 'progress' => self::_percent(
-                    substr_count(strtolower($issue['body']), '[x]'),
-                    substr_count(strtolower($issue['body']), '[ ]')),
+                    substr_count(strtolower($body), '[x]'),
+                    substr_count(strtolower($body), '[ ]')),
                 'closed' => $issue['closed_at'],
             );
         }
@@ -112,11 +115,9 @@ class Application
     private static function labels_match($issue, $needles)
     {
         if (Utilities::hasValue($issue, 'labels')) {
-            foreach ($issue['labels'] as $label) {
-                if (in_array($label['name'], $needles)) {
-                    return array($label['name']);
-                }
-            }
+            return array_filter($issue['labels'], function ($item) use ($needles) {
+                return in_array($item['name'], $needles, true);
+            });
         }
 
         return array();

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\KanbanBoard;
+namespace App\Services;
 
 class Github
 {
