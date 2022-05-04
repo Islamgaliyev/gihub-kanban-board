@@ -20,7 +20,11 @@ class Router
             $this->controller = $this->getController($controllerWithAction[1]);
             $this->action = $this->getAction($controllerWithAction[2]);
             $this->start();
+
+            return;
         }
+
+        header('Location: ' . config('app_main_page_url'));
     }
 
     private function start(): void

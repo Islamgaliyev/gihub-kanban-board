@@ -4,24 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Http\Request;
 use App\Services\Application;
-use App\Services\Authentication;
-use App\Services\Github;
-use App\Utilities;
+use App\Services\Board;
+use Github\Client;
+use Mustache_Engine;
 
 class BoardController extends BaseController
 {
+    protected Board $board;
+
+    public function __construct(Mustache_Engine $view)
+    {
+        parent::__construct($view);
+
+        $this->board = (new Board(new Client()));
+    }
+
     public function index(Request $request)
     {
-        $repositories = explode('|', Utilities::env('GH_REPOSITORIES'));
+        if (!array_key_exists('gh-token', $_SESSION)) {
+            $this->githubAuthorization->authorize();
 
-        $authentication = new Authentication();
-        $token = $authentication->login();
+            return;
+        }
 
-        $github = new Github($token, Utilities::env('GH_ACCOUNT'));
+        $milestones = $this->board->milestones($_SESSION['gh-token']);
 
-        $board = new Application($github, $repositories, array('question'));
-        $data = $board->board();
-
-        echo $this->view->render('index', array('milestones' => $data));
+        echo $this->view->render('index', array('milestones' => $milestones));
     }
 }

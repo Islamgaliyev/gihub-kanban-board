@@ -36,4 +36,14 @@ class Request
 
         return $data;
     }
+
+    public function has($parameter): bool
+    {
+        return array_key_exists($parameter, $this->request) && !empty($this->request[$parameter]);
+    }
+
+    public function get($parameter): ?string
+    {
+        return $this->request[$parameter] ?? null;
+    }
 }
