@@ -6,7 +6,7 @@ use App\Services\Exceptions\InvalidGithubResponseException;
 use Github\Client;
 use Http\Client\Exception;
 
-class GithubAuthorization
+class Authorization
 {
     public const ACCESS_TOKEN_URL = 'https://github.com/login/oauth/access_token';
 
@@ -46,7 +46,7 @@ class GithubAuthorization
 
             return $response['access_token'];
         } catch (Exception $e) {
-            throw new InvalidGithubResponseException($e->getMessage(), 400, $e);
+            throw new InvalidGithubResponseException($e->getMessage(), 0, $e);
         }
     }
 

@@ -18,7 +18,7 @@ We are expecting you to deliver:
 3. After unpacking the archive we expect to find a file `HOWTO.md` in the root
    * This file should instruct us what to do in order to:
       1. Configure our local environment in order to run the application
-      2. Test deployed application ??????? QUESTIONS
+      2. Test deployed application
 
 ## Review process
 
