@@ -113,7 +113,7 @@ class AuthorizationTest extends TestCase
                 'client_id' => 'test_gh_client_id',
                 'client_secret' => 'test_gh_client_secret',
             ]),
-        ])->andThrow(ErrorException::class);
+        ])->andThrow(new ErrorException());
 
         $this->expectException(InvalidGithubResponseException::class);
 
